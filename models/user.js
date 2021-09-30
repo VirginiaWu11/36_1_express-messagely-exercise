@@ -1,4 +1,5 @@
 /** User class for message.ly */
+const db = require("../db");
 
 /** User of the site. */
 
@@ -6,11 +7,6 @@ class User {
     /** register new user -- returns
      *    {username, password, first_name, last_name, phone}
      */
-
-    static async getAllUsers() {
-        let result = await db.query("SELECT id, name, age FROM cats");
-        return result.rows;
-    }
 
     static async register({
         username,
@@ -31,7 +27,12 @@ class User {
     /** All: basic info on all users:
      * [{username, first_name, last_name, phone}, ...] */
 
-    static async all() {}
+    static async all() {
+        let result = await db.query(
+            "SELECT username, password, first_name, last_name, phone FROM users"
+        );
+        return result.rows;
+    }
 
     /** Get: get user by username
      *
