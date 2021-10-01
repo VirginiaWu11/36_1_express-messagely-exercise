@@ -62,4 +62,14 @@ router.get("/:username/to", async (req, res, next) => {
  *
  **/
 
+router.get("/:username/from", async (req, res, next) => {
+    try {
+        const username = req.params.username;
+        const userToMessages = await User.messagesFrom(username);
+        return res.json({ messages: userToMessages });
+    } catch (e) {
+        next(e);
+    }
+});
+
 module.exports = router;

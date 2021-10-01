@@ -60,7 +60,7 @@ class User {
 
     static async messagesTo(username) {
         let result = await db.query(
-            `SELECT m.id, m.body, m.sent_at, m.read_at,u.username, u.first_name, u.last_name, u.phone 
+            `SELECT m.id, m.from_username, m.body, m.sent_at, m.read_at, u.first_name, u.last_name, u.phone 
             FROM messages AS m
             JOIN users AS u
             ON m.to_username = u.username
@@ -70,7 +70,7 @@ class User {
         return result.rows.map((val) => ({
             id: val.id,
             from_user: {
-                username: val.username,
+                username: val.from_username,
                 first_name: val.first_name,
                 last_name: val.last_name,
                 phone: val.phone,
@@ -89,7 +89,28 @@ class User {
      *   {username, first_name, last_name, phone}
      */
 
-    static async messagesFrom(username) {}
+    static async messagesFrom(username) {
+        let result = await db.query(
+            `SELECT m.id, m.to_username, m.body, m.sent_at, m.read_at, u.first_name, u.last_name, u.phone 
+            FROM messages AS m
+            JOIN users AS u
+            ON m.from_username = u.username
+            WHERE from_username = $1`,
+            [username]
+        );
+        return result.rows.map((val) => ({
+            id: val.id,
+            from_user: {
+                username: val.to_username,
+                first_name: val.first_name,
+                last_name: val.last_name,
+                phone: val.phone,
+            },
+            body: val.body,
+            sent_at: val.sent_at,
+            read_at: val.read_at,
+        }));
+    }
 }
 
 module.exports = User;
