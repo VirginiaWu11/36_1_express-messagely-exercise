@@ -24,15 +24,20 @@ CREATE TABLE messages (
 
 INSERT INTO users
   (username, password, first_name, last_name, phone, join_at, last_login_at)
-    VALUES ('JJ', 'password', 'Juanita', 'admin', '111-222-3333', '2021-09-30T23:01:42.102Z','2021-09-30T23:01:42.102Z');
+    VALUES ('JJ', '$2b$12$w5yRnJizl/xXd5J7yJ3MDOoxmKZqxLevkWFIFyJw7LXQ.F3Rga6S6', 'Juanita', 'admin', '111-222-3333', '2021-09-30T23:01:42.102Z','2021-09-30T23:01:42.102Z');
+-- password is 'password'
 
 INSERT INTO users
   (username, password, first_name, last_name, phone, join_at, last_login_at)
-    VALUES ('KK', 'password', 'Hello', 'admin', '111-222-3333', '2021-09-30T23:01:42.102Z','2021-09-30T23:01:42.102Z');
+    VALUES ('KK', '$2b$12$DgvHL4gq2/KiE0b5.mEUxer9eBi/4fzX60lugiAahuuc1Rrk2dvg2', 'Hello', 'admin', '111-222-3333', '2021-09-30T23:01:42.102Z','2021-09-30T23:01:42.102Z');
+-- password is 'password'
+
 
 INSERT INTO users
   (username, password, first_name, last_name, phone, join_at, last_login_at)
-    VALUES ('BB', 'password', 'Bloop', 'Bleep', '111-222-3333', '2021-09-30T23:01:42.102Z','2021-09-30T23:01:42.102Z');
+    VALUES ('BB', '$2b$12$yCv2ov3Bw2aEr6he.Z.L9.ycJybO45U5JBflUPIp5zXjVFVVmC4d2', 'Bloop', 'Bleep', '111-222-3333', '2021-09-30T23:01:42.102Z','2021-09-30T23:01:42.102Z');
+-- password is 'password'
+
 
 INSERT INTO messages 
     (from_username, to_username, body, sent_at, read_at)
