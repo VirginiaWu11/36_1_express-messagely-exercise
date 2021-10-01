@@ -60,10 +60,25 @@ class User {
 
     static async messagesTo(username) {
         let result = await db.query(
-            "SELECT id, from_username, body, sent_at, read_at FROM messages WHERE to_username = $1",
+            `SELECT m.id, m.body, m.sent_at, m.read_at,u.username, u.first_name, u.last_name, u.phone 
+            FROM messages AS m
+            JOIN users AS u
+            ON m.to_username = u.username
+            WHERE to_username = $1`,
             [username]
         );
-        return result.rows;
+        return result.rows.map((val) => ({
+            id: val.id,
+            from_user: {
+                username: val.username,
+                first_name: val.first_name,
+                last_name: val.last_name,
+                phone: val.phone,
+            },
+            body: val.body,
+            sent_at: val.sent_at,
+            read_at: val.read_at,
+        }));
     }
 
     /** Return messages from this user.
