@@ -45,3 +45,7 @@ INSERT INTO messages
 INSERT INTO messages 
     (from_username, to_username, body, sent_at, read_at)
     VALUES ('JJ', 'BB', 'u there?', '2021-09-30T23:02:33.102Z', '2021-09-30T23:02:35.102Z');
+
+INSERT INTO messages 
+    (from_username, to_username, body, sent_at, read_at)
+    VALUES ('KK', 'BB', 'Been trying to reach you', '2021-09-30T23:02:33.102Z', '2021-09-30T23:02:35.102Z');
