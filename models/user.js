@@ -50,6 +50,21 @@ class User {
         );
         return result.rows[0];
     }
+    /** Return messages to this user.
+     *
+     * [{id, from_user, body, sent_at, read_at}]
+     *
+     * where from_user is
+     *   {username, first_name, last_name, phone}
+     */
+
+    static async messagesTo(username) {
+        let result = await db.query(
+            "SELECT id, from_username, body, sent_at, read_at FROM messages WHERE to_username = $1",
+            [username]
+        );
+        return result.rows;
+    }
 
     /** Return messages from this user.
      *
@@ -60,16 +75,6 @@ class User {
      */
 
     static async messagesFrom(username) {}
-
-    /** Return messages to this user.
-     *
-     * [{id, from_user, body, sent_at, read_at}]
-     *
-     * where from_user is
-     *   {username, first_name, last_name, phone}
-     */
-
-    static async messagesTo(username) {}
 }
 
 module.exports = User;
