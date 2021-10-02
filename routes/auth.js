@@ -17,6 +17,7 @@ router.get("/login", async (req, res, next) => {
             throw new ExpressError("Username and password required", 400);
         }
         const message = await User.authenticate(username, password);
+        User.updateLoginTimestamp(username);
         return res.json(message);
     } catch (e) {
         next(e);
@@ -46,7 +47,7 @@ router.get("/register", async (req, res, next) => {
             last_name,
             phone
         );
-        // User.updateLoginTimestamp(username);
+        User.updateLoginTimestamp(username);
         return res.json(user);
     } catch (e) {
         next(e);
