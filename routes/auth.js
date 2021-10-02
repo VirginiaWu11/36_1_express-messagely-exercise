@@ -1,10 +1,7 @@
 const express = require("express");
 const router = new express.Router();
-const db = require("../db");
 const bcrypt = require("bcrypt");
-const jwt = require("jsonwebtoken");
 const ExpressError = require("../expressError");
-const { SECRET_KEY } = require("../config");
 const User = require("../models/user");
 const { BCRYPT_WORK_FACTOR } = require("../config");
 
@@ -19,20 +16,8 @@ router.get("/login", async (req, res, next) => {
         if (!username || !password) {
             throw new ExpressError("Username and password required", 400);
         }
-        const results = await db.query(
-            `SELECT username, password
-            FROM users
-            WHERE username = $1`,
-            [username]
-        );
-        const user = results.rows[0];
-        if (user) {
-            if (await bcrypt.compare(password, user.password)) {
-                const token = jwt.sign({ username }, SECRET_KEY);
-                return res.json({ message: `Logged in!`, token });
-            }
-        }
-        throw new ExpressError("Invalid username/password", 400);
+        const message = await User.authenticate(username, password);
+        return res.json(message);
     } catch (e) {
         next(e);
     }
