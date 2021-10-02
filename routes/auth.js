@@ -2,7 +2,9 @@ const express = require("express");
 const router = new express.Router();
 const db = require("../db");
 const bcrypt = require("bcrypt");
+const jwt = require("jsonwebtoken");
 const ExpressError = require("../expressError");
+const { SECRET_KEY } = require("../config");
 
 /** POST /login - login: {username, password} => {token}
  *
@@ -24,7 +26,8 @@ router.get("/login", async (req, res, next) => {
         const user = results.rows[0];
         if (user) {
             if (await bcrypt.compare(password, user.password)) {
-                return res.json({ message: `Logged in!` });
+                const token = jwt.sign({ username }, SECRET_KEY);
+                return res.json({ message: `Logged in!`, token });
             }
         }
         throw new ExpressError("Invalid username/password", 400);
