@@ -5,6 +5,8 @@ const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 const ExpressError = require("../expressError");
 const { SECRET_KEY } = require("../config");
+const User = require("../models/user");
+const { BCRYPT_WORK_FACTOR } = require("../config");
 
 /** POST /login - login: {username, password} => {token}
  *
@@ -42,5 +44,28 @@ router.get("/login", async (req, res, next) => {
  *
  *  Make sure to update their last-login!
  */
+router.get("/register", async (req, res, next) => {
+    try {
+        const { username, password, first_name, last_name, phone } = req.body;
+        if (!username || !password || !first_name || !last_name || !phone) {
+            throw new ExpressError("Username and password required", 400);
+        }
+
+        const hashedPassword = await bcrypt.hash(password, BCRYPT_WORK_FACTOR);
+
+        console.log(hashedPassword);
+        const user = await User.register(
+            username,
+            password,
+            first_name,
+            last_name,
+            phone
+        );
+        // User.updateLoginTimestamp(username);
+        return res.json(user);
+    } catch (e) {
+        next(e);
+    }
+});
 
 module.exports = router;
